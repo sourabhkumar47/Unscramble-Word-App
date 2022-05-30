@@ -24,7 +24,7 @@ class GameViewModel : ViewModel() {
     private lateinit var currentWord: String
 
     //Backing property
-    private var _currentScrambledWord = "test"
+    private lateinit var _currentScrambledWord : String
     val currentScrambledWord: String
         get() = _currentScrambledWord
 
@@ -55,6 +55,7 @@ class GameViewModel : ViewModel() {
     //Add logging to understand ViewModel
     init {
         Log.d("GameFragment", "GameViewModel Created!")
+        getNestWord()
     }
 
     override fun onCleared() {
