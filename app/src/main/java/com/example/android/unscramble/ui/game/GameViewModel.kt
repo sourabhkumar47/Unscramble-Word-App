@@ -6,6 +6,8 @@ class GameViewModel : ViewModel() {
 
     public var score = 0
     public var currentWordCount = 0
-    public var currentScrambledWord = "test"
+    private var _currentScrambledWord = "test"
+    val currentScrambledWord: String
+        get() = _currentScrambledWord
 
 }
