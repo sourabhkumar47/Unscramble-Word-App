@@ -24,7 +24,7 @@ class GameViewModel : ViewModel() {
     private lateinit var currentWord: String
 
     //Backing property
-    private lateinit var _currentScrambledWord : String
+    private lateinit var _currentScrambledWord: String
     val currentScrambledWord: String
         get() = _currentScrambledWord
 
@@ -63,4 +63,15 @@ class GameViewModel : ViewModel() {
         Log.d("GameFragment", "GameViewModel Destroyed")
     }
 
+//    Add a helper method
+/*
+* Returns true if the current word count is less than MAX_NO_OF_WORDS.
+* Updates the next word.
+*/
+    fun nextWord(): Boolean {
+        return if (currentWordCount < MAX_NO_OF_WORDS) {
+            getNestWord()
+            true
+        } else false
+    }
 }
