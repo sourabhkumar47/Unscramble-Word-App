@@ -5,8 +5,17 @@ import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
 
-    public var score = 0
-    public var currentWordCount = 0
+    //Backing property
+    //    public var score = 0
+    private var _score = 0
+    val score: Int
+        get() = _score
+
+    //Backing property
+//    public var _currentWordCount = 0
+    private var _currentWordCount = 0
+    val currentWordCount: Int
+        get() = _currentWordCount
 
     //to hold a list of words you use in the game, to avoid repetitions.
     private var wordsList: MutableList<String> = mutableListOf()
@@ -31,6 +40,15 @@ class GameViewModel : ViewModel() {
         while (String(tempWord).equals(currentWord, false)) {
             tempWord.shuffle()
         }
+
+        //Check if the word has been used already
+        if (wordsList.contains(currentWord)) {
+            getNestWord()
+        } else {
+            _currentScrambledWord = String(tempWord)
+            ++_currentWordCount
+            wordsList.add(currentWord)
+        }
     }
 
 
@@ -43,7 +61,5 @@ class GameViewModel : ViewModel() {
         super.onCleared()
         Log.d("GameFragment", "GameViewModel Destroyed")
     }
-
-    //Get next word
 
 }
