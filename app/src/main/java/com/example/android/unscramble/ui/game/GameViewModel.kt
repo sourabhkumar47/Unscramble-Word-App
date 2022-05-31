@@ -1,7 +1,12 @@
 package com.example.android.unscramble.ui.game
 
+import android.provider.Settings.Global.getString
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.unscramble.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class GameViewModel : ViewModel() {
 
@@ -24,6 +29,7 @@ class GameViewModel : ViewModel() {
     private lateinit var currentWord: String
 
     //Backing property
+    //lateint to initialize later
     private lateinit var _currentScrambledWord: String
     val currentScrambledWord: String
         get() = _currentScrambledWord
@@ -36,7 +42,7 @@ class GameViewModel : ViewModel() {
         val tempWord = currentWord.toCharArray()
         tempWord.shuffle()
 
-        //Sometime shuffle word is same as original , so shuffle untill it differs
+        //Sometime shuffle word is same as original , so shuffle until it differs
         while (String(tempWord).equals(currentWord, false)) {
             tempWord.shuffle()
         }
@@ -63,7 +69,7 @@ class GameViewModel : ViewModel() {
         Log.d("GameFragment", "GameViewModel Destroyed")
     }
 
-//    Add a helper method
+    //    Add a helper method
 /*
 * Returns true if the current word count is less than MAX_NO_OF_WORDS.
 * Updates the next word.
@@ -73,5 +79,25 @@ class GameViewModel : ViewModel() {
             getNestWord()
             true
         } else false
+    }
+
+//Creates and shows an AlertDialog with the final score.
+
+    private fun showFinalScoreDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            //Set the title on the alert dialog
+            .setTitle(getString(R.string.congratulations))
+            //Message
+            .setMessage(getString(R.string.you_scored, viewModel.score))
+            //make dialog box un cancellable .. during press back button
+            .setCancelable(false)
+            //text button EXIT and PLAYAGAIN
+            .setNegativeButton(getString(R.string.exit)) { _, _ ->
+                exitGame()
+            }
+            .setPositiveButton(getString(R.string.play_again)) { _, _ ->
+                restartGame()
+            }
+            .show()
     }
 }
