@@ -69,6 +69,9 @@ class GameFragment : Fragment() {
     * Displays the next scrambled word.
     */
     private fun onSubmitWord() {
+
+        //taking string from text field
+        val playerWord = binding.textInputEditText.text.toString()
 //        currentScrambledWord = getNextScrambledWord()
 //        currentWordCount++
 //        score += SCORE_INCREASE
@@ -76,12 +79,17 @@ class GameFragment : Fragment() {
 //        binding.score.text = getString(R.string.score, score)
 //        setErrorTextField(false)
 //        updateNextWordOnScreen()
-        if (viewModel.nextWord()) {
-            updateNextWordOnScreen()
+
+        //validate the user's guess by checking against the original word
+        if (viewModel.isUserWordCorrect(playerWord)) {
+            setErrorTextField(false)
+            if (viewModel.nextWord()) {
+                updateNextWordOnScreen()
+            } else {
+                showFinalScoreDialog()
+            }
         } else
-            showFinalScoreDialog()
-
-
+            setErrorTextField(true)
     }
 
     /*
