@@ -1,30 +1,17 @@
-/*
- * Copyright (C) 2020 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and 
- * limitations under the License.
- */
-
 package com.example.android.unscramble.ui.game
 
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.android.unscramble.R
 import com.example.android.unscramble.databinding.GameFragmentBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
  * Fragment where the game is played, contains the game logic.
@@ -50,7 +37,7 @@ class GameFragment : Fragment() {
         binding = GameFragmentBinding.inflate(inflater, container, false)
 
         // log statement to log the creation of the fragment
-        Log.d("GameFragment","GameFragment Created/re-created")
+        Log.d("GameFragment", "GameFragment Created/re-created")
 
         return binding.root
     }
@@ -58,7 +45,7 @@ class GameFragment : Fragment() {
     //will be called when the corresponding activity and fragment are destroyed
     override fun onDetach() {
         super.onDetach()
-        Log.d("GameFragment","GameFragment Destroyed!")
+        Log.d("GameFragment", "GameFragment Destroyed!")
     }
 
 
@@ -88,8 +75,12 @@ class GameFragment : Fragment() {
 //        binding.wordCount.text = getString(R.string.word_count, currentWordCount, MAX_NO_OF_WORDS)
 //        binding.score.text = getString(R.string.score, score)
 //        setErrorTextField(false)
-//        //updateNextWordOnScreen()
-//
+//        updateNextWordOnScreen()
+        if (viewModel.nextWord()) {
+            updateNextWordOnScreen()
+        } else
+            showFinalScoreDialog()
+
 
     }
 
@@ -105,6 +96,7 @@ class GameFragment : Fragment() {
 //        updateNextWordOnScreen()
     }
 
+
     /*
      * Gets a random word for the list of words and shuffles the letters in it.
      */
@@ -112,6 +104,27 @@ class GameFragment : Fragment() {
         val tempWord = allWordsList.random().toCharArray()
         tempWord.shuffle()
         return String(tempWord)
+    }
+
+
+//Creates and shows an AlertDialog with the final score.
+
+    private fun showFinalScoreDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            //Set the title on the alert dialog
+            .setTitle(getString(R.string.congratulations))
+            //Message
+            .setMessage(getString(R.string.you_scored, viewModel.score))
+            //make dialog box un cancellable .. during press back button
+            .setCancelable(false)
+            //text button EXIT and PLAYAGAIN
+            .setNegativeButton(getString(R.string.exit)) { _, _ ->
+                exitGame()
+            }
+            .setPositiveButton(getString(R.string.play_again)) { _, _ ->
+                restartGame()
+            }
+            .show()
     }
 
     /*

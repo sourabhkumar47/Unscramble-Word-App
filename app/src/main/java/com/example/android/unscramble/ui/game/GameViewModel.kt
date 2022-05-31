@@ -81,23 +81,4 @@ class GameViewModel : ViewModel() {
         } else false
     }
 
-//Creates and shows an AlertDialog with the final score.
-
-    private fun showFinalScoreDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            //Set the title on the alert dialog
-            .setTitle(getString(R.string.congratulations))
-            //Message
-            .setMessage(getString(R.string.you_scored, viewModel.score))
-            //make dialog box un cancellable .. during press back button
-            .setCancelable(false)
-            //text button EXIT and PLAYAGAIN
-            .setNegativeButton(getString(R.string.exit)) { _, _ ->
-                exitGame()
-            }
-            .setPositiveButton(getString(R.string.play_again)) { _, _ ->
-                restartGame()
-            }
-            .show()
-    }
 }
