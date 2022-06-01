@@ -94,4 +94,12 @@ class GameViewModel : ViewModel() {
         }
         return false
     }
+
+    //Update game restart login (when playAgain is clicked)
+    fun reinitializedata(){
+        _score = 0
+        _currentWordCount = 0
+        wordsList.clear()
+        getNestWord()
+    }
 }
