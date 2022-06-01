@@ -19,10 +19,10 @@ class GameViewModel : ViewModel() {
         get() = _score
 
     //Backing property
-    //public var _currentWordCount = 0
+    public var _currentWordCount = 0
+
     //MutableLiveData
-    private val _currentWordCount = MutableLiveData<String>()
-    val currentWordCount: LiveData<String>
+    val currentWordCount: Int
         get() = _currentWordCount
 
     //to hold a list of words you use in the game, to avoid repetitions.
@@ -33,8 +33,8 @@ class GameViewModel : ViewModel() {
 
     //Backing property
     //lateint to initialize later
-    private lateinit var _currentScrambledWord: String
-    val currentScrambledWord: String
+    private val _currentScrambledWord = MutableLiveData<String>()
+    val currentScrambledWord: LiveData<String>
         get() = _currentScrambledWord
 
     //Get random word
@@ -99,7 +99,7 @@ class GameViewModel : ViewModel() {
     }
 
     //Update game restart login (when playAgain is clicked)
-    fun reinitializedata(){
+    fun reinitializedata() {
         _score = 0
         _currentWordCount = 0
         wordsList.clear()
