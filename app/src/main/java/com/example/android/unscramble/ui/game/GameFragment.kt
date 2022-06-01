@@ -102,6 +102,13 @@ class GameFragment : Fragment() {
 //        binding.wordCount.text = getString(R.string.word_count, currentWordCount, MAX_NO_OF_WORDS)
 //        setErrorTextField(false)
 //        updateNextWordOnScreen()
+
+        if (viewModel.nextWord()) {
+            setErrorTextField(false)
+            updateNextWordOnScreen()
+        } else {
+            showFinalScoreDialog()
+        }
     }
 
 
