@@ -3,6 +3,8 @@ package com.example.android.unscramble.ui.game
 import android.provider.Settings.Global.getString
 import android.util.Log
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.unscramble.R
@@ -17,9 +19,10 @@ class GameViewModel : ViewModel() {
         get() = _score
 
     //Backing property
-//    public var _currentWordCount = 0
-    private var _currentWordCount = 0
-    val currentWordCount: Int
+    //public var _currentWordCount = 0
+    //MutableLiveData
+    private val _currentWordCount = MutableLiveData<String>()
+    val currentWordCount: LiveData<String>
         get() = _currentWordCount
 
     //to hold a list of words you use in the game, to avoid repetitions.
@@ -51,7 +54,7 @@ class GameViewModel : ViewModel() {
         if (wordsList.contains(currentWord)) {
             getNestWord()
         } else {
-            _currentScrambledWord = String(tempWord)
+            _currentScrambledWord.value = String(tempWord)
             ++_currentWordCount
             wordsList.add(currentWord)
         }

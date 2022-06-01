@@ -38,7 +38,8 @@ class GameFragment : Fragment() {
 
         // log statement to log the creation of the fragment
         Log.d("GameFragment", "GameFragment Created/re-created")
-        Log.d("GameFragment", "Word: ${viewModel.currentScrambledWord}" +
+        Log.d(
+            "GameFragment", "Word: ${viewModel.currentScrambledWord}" +
                     "Score: ${viewModel.score} WordCount : $ { viewModel.currentWordCount }"
         )
 
@@ -59,12 +60,17 @@ class GameFragment : Fragment() {
         binding.submit.setOnClickListener { onSubmitWord() }
         binding.skip.setOnClickListener { onSkipWord() }
         // Update the UI
-        updateNextWordOnScreen()
+//        updateNextWordOnScreen()
         binding.score.text = getString(R.string.score, 0)
         binding.wordCount.text = getString(
             R.string.word_count, 0, MAX_NO_OF_WORDS
         )
 
+        // Observe the scrambledCharArray LiveData, passing in the LifecycleOwner and the observer.
+        viewModel.currentScrambledWord.observe(viewLifecycleOwner,
+            { newWord ->
+                binding.textViewUnscrambledWord.text = newWord
+            })
     }
 
     /*
@@ -86,13 +92,13 @@ class GameFragment : Fragment() {
         //validate the user's guess by checking against the original word
         if (viewModel.isUserWordCorrect(playerWord)) {
             setErrorTextField(false)
-            if (viewModel.nextWord()) {
-                updateNextWordOnScreen()
-            } else {
+            if (!viewModel.nextWord()) {
+//                updateNextWordOnScreen()
                 showFinalScoreDialog()
             }
-        } else
+        } else {
             setErrorTextField(true)
+        }
     }
 
     /*
@@ -108,7 +114,7 @@ class GameFragment : Fragment() {
 
         if (viewModel.nextWord()) {
             setErrorTextField(false)
-            updateNextWordOnScreen()
+//            updateNextWordOnScreen()
         } else {
             showFinalScoreDialog()
         }
@@ -152,7 +158,7 @@ class GameFragment : Fragment() {
     private fun restartGame() {
         viewModel.reinitializedata()
         setErrorTextField(false)
-        updateNextWordOnScreen()
+//        updateNextWordOnScreen()
     }
 
     /*
@@ -182,7 +188,7 @@ class GameFragment : Fragment() {
 //        binding.textViewUnscrambledWord.text = currentScrambledWord
 //    }
     //Backing property
-    private fun updateNextWordOnScreen() {
-        binding.textViewUnscrambledWord.text = viewModel.currentScrambledWord
-    }
+//    private fun updateNextWordOnScreen() {
+//        binding.textViewUnscrambledWord.text = viewModel.currentScrambledWord
+//    }
 }
