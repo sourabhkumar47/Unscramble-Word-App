@@ -37,7 +37,7 @@ class GameFragment : Fragment() {
         // Inflate the layout XML file and return a binding object instance
         //binding = GameFragmentBinding.inflate(inflater, container, false)
         //Updated to data binding
-        binding = DataBindingUtil.inflate(inflater,R.layout.game_fragment,container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.game_fragment, container, false)
 
         // log statement to log the creation of the fragment
         Log.d("GameFragment", "GameFragment Created/re-created")
@@ -59,6 +59,14 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //initialize the layout variable
+        binding.gameViewModel = viewModel
+        binding.maxNoOfWords = MAX_NO_OF_WORDS
+
+        //specify the fragment view as lifecycle owner of the binding
+        //This is used so that  the binding can observe LiveData update
+        binding.lifecycleOwner = viewLifecycleOwner
+
         // Setup a click listener for the Submit and Skip buttons.
         binding.submit.setOnClickListener { onSubmitWord() }
         binding.skip.setOnClickListener { onSkipWord() }
@@ -70,22 +78,22 @@ class GameFragment : Fragment() {
 //        )
 
         // Observe the scrambledCharArray LiveData, passing in the LifecycleOwner and the observer.
-        viewModel.currentScrambledWord.observe(viewLifecycleOwner,
-            { newWord ->
-                binding.textViewUnscrambledWord.text = newWord
-            })
+//        viewModel.currentScrambledWord.observe(viewLifecycleOwner,
+//            { newWord ->
+//                binding.textViewUnscrambledWord.text = newWord
+//            })
         //Observer of Score
-        viewModel.score.observe(viewLifecycleOwner,
-            { newScore ->
-                binding.score.text = getString(R.string.score, newScore)
-            })
-
-        //Observer for currentWordCount
-        viewModel.currentWordCount.observe(viewLifecycleOwner,
-            { newWordCount ->
-                binding.wordCount.text =
-                    getString(R.string.word_count, newWordCount, MAX_NO_OF_WORDS)
-            })
+//        viewModel.score.observe(viewLifecycleOwner,
+//            { newScore ->
+//                binding.score.text = getString(R.string.score, newScore)
+//            })
+//
+//        //Observer for currentWordCount
+//        viewModel.currentWordCount.observe(viewLifecycleOwner,
+//            { newWordCount ->
+//                binding.wordCount.text =
+//                    getString(R.string.word_count, newWordCount, MAX_NO_OF_WORDS)
+//            })
     }
 
     /*
