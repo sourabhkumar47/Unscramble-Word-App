@@ -1,12 +1,10 @@
 package com.example.android.unscramble.ui.game
 
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -50,10 +48,10 @@ class GameFragment : Fragment() {
     }
 
     //will be called when the corresponding activity and fragment are destroyed
-    override fun onDetach() {
-        super.onDetach()
-        Log.d("GameFragment", "GameFragment Destroyed!")
-    }
+//    override fun onDetach() {
+//        super.onDetach()
+//        Log.d("GameFragment", "GameFragment Destroyed!")
+//    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -147,11 +145,11 @@ class GameFragment : Fragment() {
     /*
      * Gets a random word for the list of words and shuffles the letters in it.
      */
-    private fun getNextScrambledWord(): String {
-        val tempWord = allWordsList.random().toCharArray()
-        tempWord.shuffle()
-        return String(tempWord)
-    }
+//    private fun getNextScrambledWord(): String {
+//        val tempWord = allWordsList.random().toCharArray()
+//        tempWord.shuffle()
+//        return String(tempWord)
+//    }
 
 
 //Creates and shows an AlertDialog with the final score.

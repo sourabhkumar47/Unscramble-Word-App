@@ -1,14 +1,11 @@
 package com.example.android.unscramble.ui.game
 
-import android.provider.Settings.Global.getString
+
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.TtsSpan
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.android.unscramble.R
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.lifecycle.*
 
 class GameViewModel : ViewModel() {
 
@@ -22,19 +19,33 @@ class GameViewModel : ViewModel() {
     val currentWordCount: LiveData<Int>
         get() = _currentWordCount
 
-    //to hold a list of words you use in the game, to avoid repetitions.
-
-    private var wordsList: MutableList<String> = mutableListOf()
+    private val _currentScrambledWord = MutableLiveData<String>()
+    val currentScrambledWord: LiveData<Spannable> = Transformations.map(_currentScrambledWord) {
+        if (it == null) {
+            SpannableString("")
+        } else {
+            val scrambledWord = it.toString()
+            val spannable: Spannable = SpannableString(scrambledWord)
+            spannable.setSpan(
+                TtsSpan.VerbatimBuilder(scrambledWord).build(),
+                0,
+                scrambledWord.length,
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE
+            )
+            spannable
+        }
+    }
 
     //to hold the word player trying to unscramble
+    private var wordsList: MutableList<String> = mutableListOf()
+
+    //lateint to initialize later
     private lateinit var currentWord: String
 
-    //Backing property
-    //lateint to initialize later
-    //MutableLiveData
-    private val _currentScrambledWord = MutableLiveData<String>()
-    val currentScrambledWord: LiveData<String>
-        get() = _currentScrambledWord
+    init {
+        getNestWord()
+    }
+
 
     //Get random word
     private fun getNestWord() {
@@ -67,10 +78,10 @@ class GameViewModel : ViewModel() {
         getNestWord()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("GameFragment", "GameViewModel Destroyed")
-    }
+//override fun onCleared() {
+//    super.onCleared()
+//    Log.d("GameFragment", "GameViewModel Destroyed")
+//}
 
     //    Add a helper method
 /*
